@@ -1,21 +1,18 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { LinkedAccountWithMetadata, usePrivy } from "@privy-io/react-auth";
+import { usePrivy } from "@privy-io/react-auth";
+import { useExportWallet } from "@privy-io/react-auth/solana";
 import { motion } from "framer-motion";
 import { Copy, ExternalLink, LogOut, Wallet } from "lucide-react";
 import { useState } from "react";
 
 export default function SettingsPage() {
-  const { user, logout, exportWallet, linkWallet } = usePrivy();
+  const { user, logout, linkWallet } = usePrivy();
   const [copiedAddress, setCopiedAddress] = useState(false);
+  const { exportWallet } = useExportWallet();
 
-  
-  // Find the Privy embedded wallet (can be exported)
-  // Using type assertion to access connectorType
   const embeddedWallet = user?.wallet;
-  console.log(embeddedWallet);
-
   const email = user?.email?.address;
 
   const handleCopyAddress = (address: string) => {
@@ -32,9 +29,7 @@ export default function SettingsPage() {
     if (!embeddedWallet) return;
 
     try {
-      await exportWallet({
-        address: embeddedWallet.address,
-      });
+      await exportWallet();
     } catch (error) {
       console.error("Export wallet error:", error);
     }

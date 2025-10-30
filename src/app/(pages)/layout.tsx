@@ -3,7 +3,7 @@
 import { AppSidebar } from "@/components/AppSidebar";
 import { Spinner } from "@/components/ui/8bit/spinner";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { usePrivy } from "@privy-io/react-auth";
+import { useLogin, usePrivy } from "@privy-io/react-auth";
 import { motion } from "framer-motion";
 import { ArrowRight, Shield, Zap } from "lucide-react";
 import Link from "next/link";
@@ -16,7 +16,27 @@ interface PagesLayoutProps {
 export default function PagesLayout({
   children,
 }: Readonly<PagesLayoutProps>) {
-  const { authenticated, ready, login } = usePrivy();
+  const { authenticated, ready } = usePrivy();
+const { login } = useLogin({
+    onComplete: ({
+      user,
+      isNewUser,
+      wasAlreadyAuthenticated,
+      loginMethod,
+      loginAccount,
+    }) => {
+      console.log(
+        user,
+        isNewUser,
+        wasAlreadyAuthenticated,
+        loginMethod,
+        loginAccount
+      );
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
 
   if (!ready) {
     return (

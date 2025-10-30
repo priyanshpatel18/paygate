@@ -13,7 +13,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       config={{
         embeddedWallets: {
           solana: {
-            createOnLogin: 'users-without-wallets',
+            createOnLogin: 'all-users',
           },
         },
         appearance: { walletChainType: "solana-only" },
@@ -40,7 +40,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
             },
           },
         },
-        loginMethods: ["wallet", "email"]
+        loginMethods: ["email", "wallet"]
       }}
     >
       <ThemeProvider attribute="class" defaultTheme="solana">
