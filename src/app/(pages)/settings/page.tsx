@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { usePrivy } from "@privy-io/react-auth";
+import { LinkedAccountWithMetadata, usePrivy } from "@privy-io/react-auth";
 import { motion } from "framer-motion";
 import { Copy, ExternalLink, LogOut, Wallet } from "lucide-react";
 import { useState } from "react";
@@ -10,19 +10,34 @@ export default function SettingsPage() {
   const { user, logout, exportWallet, linkWallet } = usePrivy();
   const [copiedAddress, setCopiedAddress] = useState(false);
 
-  const walletAddress = user?.wallet?.address;
+  
+  // Find the Privy embedded wallet (can be exported)
+  // Using type assertion to access connectorType
+  const embeddedWallet = user?.wallet;
+  console.log(embeddedWallet);
+
   const email = user?.email?.address;
 
-  const handleCopyAddress = () => {
-    if (walletAddress) {
-      navigator.clipboard.writeText(walletAddress);
-      setCopiedAddress(true);
-      setTimeout(() => setCopiedAddress(false), 2000);
-    }
+  const handleCopyAddress = (address: string) => {
+    navigator.clipboard.writeText(address);
+    setCopiedAddress(true);
+    setTimeout(() => setCopiedAddress(false), 2000);
   };
 
   const truncateAddress = (address: string) => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  };
+
+  const handleExportWallet = async () => {
+    if (!embeddedWallet) return;
+
+    try {
+      await exportWallet({
+        address: embeddedWallet.address,
+      });
+    } catch (error) {
+      console.error("Export wallet error:", error);
+    }
   };
 
   return (
@@ -62,18 +77,20 @@ export default function SettingsPage() {
                 </div>
               )}
 
-              {/* Wallet Address */}
-              {walletAddress && (
+              {/* Embedded Wallet */}
+              {embeddedWallet && (
                 <div className="flex items-center justify-between py-3">
                   <div>
                     <div className="text-sm text-muted-foreground mb-1">Wallet Address</div>
-                    <div className="font-mono text-sm">{truncateAddress(walletAddress)}</div>
+                    <div className="font-mono text-sm">
+                      {truncateAddress(embeddedWallet.address)}
+                    </div>
                   </div>
                   <div className="flex gap-2">
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={handleCopyAddress}
+                      onClick={() => handleCopyAddress(embeddedWallet.address)}
                       className="gap-2"
                     >
                       <Copy className="w-4 h-4" />
@@ -82,7 +99,12 @@ export default function SettingsPage() {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => window.open(`https://solscan.io/account/${walletAddress}`, '_blank')}
+                      onClick={() =>
+                        window.open(
+                          `https://solscan.io/account/${embeddedWallet.address}`,
+                          "_blank"
+                        )
+                      }
                       className="gap-2"
                     >
                       <ExternalLink className="w-4 h-4" />
@@ -105,23 +127,25 @@ export default function SettingsPage() {
           <h2 className="text-lg font-semibold mb-4">Wallet Management</h2>
 
           <div className="space-y-3">
-            <Button
-              variant="outline"
-              className="w-full justify-start gap-3"
-              onClick={exportWallet}
-            >
-              <Wallet className="w-4 h-4" />
-              Export Private Key
-            </Button>
+            {embeddedWallet && (
+              <Button
+                variant="outline"
+                className="w-full justify-start gap-3"
+                onClick={handleExportWallet}
+              >
+                <Wallet className="w-4 h-4" />
+                Export Private Key
+              </Button>
+            )}
 
-            {!walletAddress && (
+            {!embeddedWallet && (
               <Button
                 variant="outline"
                 className="w-full justify-start gap-3"
                 onClick={linkWallet}
               >
                 <Wallet className="w-4 h-4" />
-                Link External Wallet
+                Create Wallet
               </Button>
             )}
           </div>
