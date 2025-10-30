@@ -61,7 +61,7 @@ export function ThemeToggle() {
           variant="ghost"
           size="icon"
           aria-label={`Current theme: ${currentTheme.label}. Click to change theme`}
-          className="relative transition-transform hover:scale-105 active:scale-95"
+          className="relative transition-transform hover:scale-105 active:scale-95 bg-muted/95"
         >
           {Icon === IconSolana ? (
             <Icon className="size-5 transition-opacity" />

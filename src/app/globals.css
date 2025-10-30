@@ -278,3 +278,9 @@ html {
   border-color: transparent;
   font-weight: 500;
 }
+
+@layer components {
+  .chart-glow .recharts-area .recharts-curve {
+    filter: drop-shadow(0 0 6px rgba(20, 241, 149, 0.3));
+  }
+}
