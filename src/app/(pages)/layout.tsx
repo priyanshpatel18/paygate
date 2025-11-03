@@ -3,11 +3,11 @@
 import { AppSidebar } from "@/components/AppSidebar";
 import { Spinner } from "@/components/ui/8bit/spinner";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { useLogin, usePrivy } from "@privy-io/react-auth";
+import { useLogin, usePrivy, User } from "@privy-io/react-auth";
 import { motion } from "framer-motion";
 import { ArrowRight, Shield, Zap } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 interface PagesLayoutProps {
   children: React.ReactNode;
@@ -16,29 +16,69 @@ interface PagesLayoutProps {
 export default function PagesLayout({
   children,
 }: Readonly<PagesLayoutProps>) {
-  const { authenticated, ready } = usePrivy();
-const { login } = useLogin({
-    onComplete: ({
-      user,
-      isNewUser,
-      wasAlreadyAuthenticated,
-      loginMethod,
-      loginAccount,
-    }) => {
-      console.log(
-        user,
-        isNewUser,
-        wasAlreadyAuthenticated,
-        loginMethod,
-        loginAccount
-      );
+  const { authenticated, ready, user } = usePrivy();
+  const [isUserSyncing, setIsUserSyncing] = useState(false);
+
+  const { login } = useLogin({
+    onComplete: async ({ user, isNewUser }) => {
+      console.log("Login complete:", { user, isNewUser });
+      // Sync user after login
+      await syncUser(user);
     },
     onError: (error) => {
-      console.error(error);
+      console.error("Login error:", error);
     },
   });
 
-  if (!ready) {
+  // Sync user with backend - saves all linked wallet addresses
+  const syncUser = async (privyUser: User) => {
+    try {
+      setIsUserSyncing(true);
+      console.log(privyUser);
+
+      // Extract all wallet addresses from linkedAccounts
+      const walletAddresses = privyUser.linkedAccounts
+        .filter((account) => account.type === "wallet")
+        .map((account) => account.address);
+
+      // Get unique wallet addresses (in case there are duplicates)
+      const uniqueWallets = [...new Set(walletAddresses)];
+
+      const response = await fetch("/api/user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          privyId: privyUser.id,
+          wallets: uniqueWallets,
+          primaryWallet: privyUser.wallet?.address || null,
+          email: privyUser.email?.address || null,
+          linkedAccounts: privyUser.linkedAccounts,
+        }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to sync user");
+      }
+
+      console.log("User synced successfully:", data);
+    } catch (error) {
+      console.error("Error syncing user:", error);
+    } finally {
+      setIsUserSyncing(false);
+    }
+  };
+
+  // Sync user on mount if authenticated
+  useEffect(() => {
+    if (authenticated && user && !isUserSyncing) {
+      syncUser(user);
+    }
+  }, [authenticated, user]);
+
+  if (!ready || isUserSyncing) {
     return (
       <div className="h-screen flex items-center justify-center bg-background">
         <Spinner className="size-22" />
@@ -64,7 +104,6 @@ const { login } = useLogin({
             >
               <Shield className="w-8 h-8 text-background" />
             </motion.div>
-
             <motion.h1
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -73,7 +112,6 @@ const { login } = useLogin({
             >
               Welcome to PayGate
             </motion.h1>
-
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -119,7 +157,6 @@ const { login } = useLogin({
                   </div>
                 </div>
               </div>
-
               <div className="flex items-start gap-3 p-3 bg-card border border-border rounded-lg">
                 <Shield className="w-5 h-5 text-muted-foreground shrink-0 mt-0.5" />
                 <div>
@@ -138,7 +175,14 @@ const { login } = useLogin({
             transition={{ delay: 0.5 }}
             className="text-center text-xs text-muted-foreground mt-8"
           >
-            By signing in, you agree to our <Link href="/terms" className="hover:underline">Terms of Service</Link> and <Link href="/privacy" className="hover:underline">Privacy Policy</Link>
+            By signing in, you agree to our{" "}
+            <Link href="/terms" className="hover:underline">
+              Terms of Service
+            </Link>{" "}
+            and{" "}
+            <Link href="/privacy" className="hover:underline">
+              Privacy Policy
+            </Link>
           </motion.p>
         </motion.div>
       </div>
@@ -148,9 +192,7 @@ const { login } = useLogin({
   return (
     <SidebarProvider>
       <AppSidebar variant="inset" />
-      <SidebarInset>
-        {children}
-      </SidebarInset>
+      <SidebarInset>{children}</SidebarInset>
     </SidebarProvider>
   );
 }
