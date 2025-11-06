@@ -8,36 +8,44 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum RequestType {
+  GET
+  POST
+  PUT
+  DELETE
+  PATCH
+}
+
 model User {
-  id            String    @id @default(cuid())
-  privyId       String    @unique
+  id            String   @id @default(cuid())
+  privyId       String   @unique
   primaryWallet String?
   email         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  
-  apis          Api[]
-  wallets       Wallet[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  apis    Api[]
+  wallets Wallet[]
 
   @@index([privyId])
   @@index([primaryWallet])
 }
 
 model Wallet {
-  id               String   @id @default(cuid())
-  address          String   @unique
-  chainType        String   // "solana", "ethereum", etc.
-  walletClientType String?  // "Backpack", "privy", etc.
-  connectorType    String?  // "solana_adapter", "embedded", etc.
+  id               String    @id @default(cuid())
+  address          String    @unique
+  chainType        String
+  walletClientType String?
+  connectorType    String?
   firstVerifiedAt  DateTime?
   latestVerifiedAt DateTime?
-  isPrimary        Boolean  @default(false)
-  
-  userId           String
-  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  isPrimary        Boolean   @default(false)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId])
   @@index([address])
@@ -45,23 +53,26 @@ model Wallet {
 }
 
 model Api {
-  id              String   @id @default(cuid())
-  name            String
+  id              String  @id @default(cuid())
+  name            String?
   description     String?
   endpoint        String
-  originalUrl     String
-  wrappedUrl      String   @unique
-  pricePerRequest Float    @default(0.01)
-  status          String   @default("active")
-  totalRequests   Int      @default(0)
-  successRequests Int      @default(0)
-  totalRevenue    Float    @default(0)
-  
-  userId          String
-  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  wrappedUrl      String  @unique
+  pricePerRequest Float   @default(0.01)
+  status          String  @default("active")
+  totalRequests   Int     @default(0)
+  successRequests Int     @default(0)
+  totalRevenue    Float   @default(0)
+  imageUrl        String? // NEW
+
+  testMode    Boolean
+  requestType RequestType @default(GET)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId])
   @@index([wrappedUrl])

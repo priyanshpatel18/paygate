@@ -22,8 +22,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { bricolageGrotesque } from "@/fonts";
 
-// Navigation configuration
 const NAV_ITEMS = [
   {
     title: "Dashboard",
@@ -60,8 +60,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <Link href="/" className="flex items-center gap-3 px-2 py-4">
-              <div className="w-8 h-8 rounded-lg bg-foreground flex-shrink-0" />
-              <span className="text-xl font-semibold">PayGate</span>
+              <span className={`text-3xl font-semibold ${bricolageGrotesque.className}`}>Paygate</span>
             </Link>
           </SidebarMenuItem>
         </SidebarMenu>

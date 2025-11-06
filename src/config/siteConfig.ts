@@ -1,9 +1,8 @@
 import { Metadata } from "next";
 
 const { title, description, ogImage, baseURL } = {
-  title: "PayGate",
-  description:
-    "PayGate is the x402 payment gateway for APIs. Monetize any API endpoint instantly with Solana micropayments. Add one line of code, start earning. No complex integrations, no minimum fees—just simple pay-per-request monetization for developers.",
+  title: "Paygate - The Monetization Layer on Solana",
+  description: "The Monetization Layer on Solana. Turn any API into a revenue stream in 60 seconds. One line of code to accept Solana payments—no smart contracts, no complexity. Built on x402 Protocol.",
   baseURL: "https://paygate.solixdb.xyz",
   ogImage: `https://paygate.solixdb.xyz/open-graph.png`,
 };
@@ -27,22 +26,23 @@ export const siteConfig: Metadata = {
   icons: {
     icon: "/favicon.ico",
   },
-  applicationName: "PayGate",
+  applicationName: "Paygate",
   alternates: {
     canonical: baseURL,
   },
   keywords: [
-    "x402 Protocol",
+    "Monetization Layer",
+    "Solana Monetization",
     "API Monetization",
     "Solana Payments",
+    "x402 Protocol",
     "Micropayments API",
     "Pay-per-request",
     "API Gateway",
-    "Crypto Payments",
     "Developer Tools",
-    "HTTP 402",
-    "API Wrapper",
+    "Instant Payments",
     "Solana API",
     "Agent Payments",
+    "Revenue Stream",
   ],
 };
