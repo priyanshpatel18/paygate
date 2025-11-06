@@ -20,9 +20,7 @@ export default function PagesLayout({
   const [isUserSyncing, setIsUserSyncing] = useState(false);
 
   const { login } = useLogin({
-    onComplete: async ({ user, isNewUser }) => {
-      console.log("Login complete:", { user, isNewUser });
-      // Sync user after login
+    onComplete: async ({ user }) => {
       await syncUser(user);
     },
     onError: (error) => {
@@ -34,7 +32,6 @@ export default function PagesLayout({
   const syncUser = async (privyUser: User) => {
     try {
       setIsUserSyncing(true);
-      console.log(privyUser);
 
       // Extract all wallet addresses from linkedAccounts
       const walletAddresses = privyUser.linkedAccounts
@@ -62,8 +59,6 @@ export default function PagesLayout({
       if (!response.ok) {
         throw new Error(data.error || "Failed to sync user");
       }
-
-      console.log("User synced successfully:", data);
     } catch (error) {
       console.error("Error syncing user:", error);
     } finally {
@@ -81,7 +76,7 @@ export default function PagesLayout({
   if (!ready || isUserSyncing) {
     return (
       <div className="h-screen flex items-center justify-center bg-background">
-        <Spinner className="size-22" />
+        <Spinner className="size-22 text-primary" />
       </div>
     );
   }
@@ -110,7 +105,7 @@ export default function PagesLayout({
               transition={{ delay: 0.2 }}
               className="text-3xl font-bold mb-3"
             >
-              Welcome to PayGate
+              Welcome to Paygate
             </motion.h1>
             <motion.p
               initial={{ opacity: 0 }}

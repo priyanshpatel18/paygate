@@ -43,80 +43,57 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* Default to Solana theme */
+/* Light theme - Clean and professional */
 :root,
-:root:not(.light):not(.dark),
+:root:not(.light):not(.dark):not(.solana),
 html {
-  color-scheme: dark;
-  --radius: 0.625rem;
-  --background: #0d0d12;
-  --foreground: #f0f2f5;
-  --card: #161620;
-  --card-foreground: #f0f2f5;
-  --popover: #161620;
-  --popover-foreground: #f0f2f5;
-  --primary: #14f195;
-  --primary-gradient: linear-gradient(135deg, #14f195 0%, #9945ff 100%);
-  --primary-hover: #14f195dd;
-  --primary-gradient-hover: linear-gradient(135deg, #14f195 0%, #a855f7 100%);
-  --primary-foreground: #0d0d12;
-  --secondary: #9945ff;
-  --secondary-foreground: #f0f2f5;
-  --secondary-hover: #9945ffdd;
-  --muted: #1a1a25;
-  --muted-foreground: #9ca3af;
-  --accent: #14f195;
-  --accent-foreground: #0d0d12;
-  --accent-hover: #14f195dd;
-  --destructive: #ff4757;
-  --border: #2a2a38;
-  --input: #1a1a25;
-  --ring: #14f195;
-  --chart-1: #14f195;
-  --chart-2: #9945ff;
-  --chart-3: #22d3ee;
-  --chart-4: #fbbf24;
-  --chart-5: #f472b6;
-  --sidebar: #0a0a0f;
-  --sidebar-foreground: #f0f2f5;
-  --sidebar-primary: #14f195;
-  --sidebar-primary-foreground: #0d0d12;
-  --sidebar-accent: #9945ff;
-  --sidebar-accent-foreground: #f0f2f5;
-  --sidebar-accent-hover: #9945ffdd;
-  --sidebar-border: #2a2a38;
-  --sidebar-ring: #14f195;
-}
+  color-scheme: light;
+  --radius: 0.5rem;
 
-/* Light theme - Enhanced modern palette */
-.light {
-  --radius: 0.625rem;
-  --background: #fafbfc;
+  /* Core colors - Professional blue palette */
+  --background: #ffffff;
   --foreground: #0f172a;
   --card: #ffffff;
   --card-foreground: #0f172a;
   --popover: #ffffff;
   --popover-foreground: #0f172a;
-  --primary: #2563eb;
+
+  /* Primary - Trustworthy blue */
+  --primary: #3b82f6;
   --primary-foreground: #ffffff;
+  --primary-hover: #2563eb;
+
+  /* Secondary - Subtle slate */
   --secondary: #f1f5f9;
   --secondary-foreground: #0f172a;
+  --secondary-hover: #e2e8f0;
+
+  /* Muted - Light gray */
   --muted: #f8fafc;
   --muted-foreground: #64748b;
-  --accent: #dbeafe;
+
+  /* Accent - Vibrant blue */
+  --accent: #eff6ff;
   --accent-foreground: #1e40af;
+  --accent-hover: #dbeafe;
+
+  /* Utility */
   --destructive: #ef4444;
   --border: #e2e8f0;
-  --input: #f8fafc;
+  --input: #ffffff;
   --ring: #3b82f6;
+
+  /* Charts - Balanced palette */
   --chart-1: #3b82f6;
   --chart-2: #8b5cf6;
   --chart-3: #06b6d4;
   --chart-4: #10b981;
   --chart-5: #f59e0b;
-  --sidebar: #ffffff;
+
+  /* Sidebar */
+  --sidebar: #f8fafc;
   --sidebar-foreground: #0f172a;
-  --sidebar-primary: #2563eb;
+  --sidebar-primary: #3b82f6;
   --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #f1f5f9;
   --sidebar-accent-foreground: #0f172a;
@@ -124,86 +101,164 @@ html {
   --sidebar-ring: #3b82f6;
 }
 
-/* Dark theme - Enhanced with better contrast */
+/* Light theme explicit class */
+.light {
+  color-scheme: light;
+  --radius: 0.5rem;
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --primary: #3b82f6;
+  --primary-foreground: #ffffff;
+  --primary-hover: #2563eb;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #0f172a;
+  --secondary-hover: #e2e8f0;
+  --muted: #f8fafc;
+  --muted-foreground: #64748b;
+  --accent: #eff6ff;
+  --accent-foreground: #1e40af;
+  --accent-hover: #dbeafe;
+  --destructive: #ef4444;
+  --border: #e2e8f0;
+  --input: #ffffff;
+  --ring: #3b82f6;
+  --chart-1: #3b82f6;
+  --chart-2: #8b5cf6;
+  --chart-3: #06b6d4;
+  --chart-4: #10b981;
+  --chart-5: #f59e0b;
+  --sidebar: #f8fafc;
+  --sidebar-foreground: #0f172a;
+  --sidebar-primary: #3b82f6;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f1f5f9;
+  --sidebar-accent-foreground: #0f172a;
+  --sidebar-border: #e2e8f0;
+  --sidebar-ring: #3b82f6;
+}
+
+/* Dark theme - Modern with great contrast */
 .dark {
-  --background: #0a0e1a;
+  color-scheme: dark;
+  --radius: 0.5rem;
+
+  /* Core colors - Deep blue-gray */
+  --background: #0f172a;
   --foreground: #f1f5f9;
-  --card: #111827;
+  --card: #1e293b;
   --card-foreground: #f1f5f9;
-  --popover: #111827;
+  --popover: #1e293b;
   --popover-foreground: #f1f5f9;
+
+  /* Primary - Bright blue for visibility */
   --primary: #60a5fa;
-  --primary-foreground: #0a0e1a;
-  --secondary: #1e293b;
+  --primary-foreground: #0f172a;
+  --primary-hover: #3b82f6;
+
+  /* Secondary - Subtle slate */
+  --secondary: #334155;
   --secondary-foreground: #f1f5f9;
+  --secondary-hover: #475569;
+
+  /* Muted - Dark slate */
   --muted: #1e293b;
   --muted-foreground: #94a3b8;
+
+  /* Accent - Deep blue */
   --accent: #1e3a8a;
   --accent-foreground: #93c5fd;
-  --destructive: #f87171;
-  --border: #1e293b;
+  --accent-hover: #1e40af;
+
+  /* Utility */
+  --destructive: #ef4444;
+  --border: #334155;
   --input: #1e293b;
   --ring: #60a5fa;
+
+  /* Charts - Vibrant but not overwhelming */
   --chart-1: #60a5fa;
   --chart-2: #a78bfa;
   --chart-3: #22d3ee;
   --chart-4: #34d399;
   --chart-5: #fbbf24;
+
+  /* Sidebar */
   --sidebar: #0f172a;
   --sidebar-foreground: #f1f5f9;
   --sidebar-primary: #60a5fa;
-  --sidebar-primary-foreground: #0a0e1a;
-  --sidebar-accent: #1e293b;
+  --sidebar-primary-foreground: #0f172a;
+  --sidebar-accent: #334155;
   --sidebar-accent-foreground: #f1f5f9;
-  --sidebar-border: #1e293b;
+  --sidebar-border: #334155;
   --sidebar-ring: #60a5fa;
 }
 
-/* Solana theme - Refined with better hierarchy */
+/* Solana theme - Refined and balanced */
 .solana {
-  --background: #0d0d12;
-  --foreground: #f0f2f5;
-  --card: #161620;
-  --card-foreground: #f0f2f5;
-  --popover: #161620;
-  --popover-foreground: #f0f2f5;
-  --primary: #14f195;
-  --primary-gradient: linear-gradient(135deg, #14f195 0%, #9945ff 100%);
-  --primary-hover: #14f195dd;
-  --primary-gradient-hover: linear-gradient(135deg, #14f195 0%, #a855f7 100%);
-  --primary-foreground: #0d0d12;
-  --secondary: #9945ff;
-  --secondary-foreground: #f0f2f5;
-  --secondary-hover: #9945ffdd;
+  color-scheme: dark;
+  --radius: 0.5rem;
+
+  /* Core colors - Darker, more professional */
+  --background: #0a0a0f;
+  --foreground: #e5e7eb;
+  --card: #14141f;
+  --card-foreground: #e5e7eb;
+  --popover: #14141f;
+  --popover-foreground: #e5e7eb;
+
+  /* Primary - Solana green */
+  --primary: #14F195;
+  --primary-foreground: #0a0a0f;
+  --primary-hover: #00d4aa;
+  --primary-gradient: linear-gradient(135deg, #14F195 0%, #9945FF 100%);
+
+  /* Secondary - Solana purple */
+  --secondary: #9945FF;
+  --secondary-foreground: #e5e7eb;
+  --secondary-hover: #7d34e0;
+
+  /* Muted - Darker gray */
   --muted: #1a1a25;
   --muted-foreground: #9ca3af;
-  --accent: #14f195;
-  --accent-foreground: #0d0d12;
-  --accent-hover: #14f195dd;
-  --destructive: #ff4757;
-  --border: #2a2a38;
+
+  /* Accent - Green accent */
+  --accent: #14F195;
+  --accent-foreground: #0a0a0f;
+  --accent-hover: #00d4aa;
+
+  /* Utility */
+  --destructive: #ef4444;
+  --border: #27273a;
   --input: #1a1a25;
-  --ring: #14f195;
-  --chart-1: #14f195;
-  --chart-2: #9945ff;
+  --ring: #14F195;
+
+  /* Charts - Solana themed */
+  --chart-1: #14F195;
+  --chart-2: #9945FF;
   --chart-3: #22d3ee;
   --chart-4: #fbbf24;
   --chart-5: #f472b6;
+
+  /* Sidebar */
   --sidebar: #0a0a0f;
-  --sidebar-foreground: #f0f2f5;
-  --sidebar-primary: #14f195;
-  --sidebar-primary-foreground: #0d0d12;
-  --sidebar-accent: #9945ff;
-  --sidebar-accent-foreground: #f0f2f5;
-  --sidebar-accent-hover: #9945ffdd;
-  --sidebar-border: #2a2a38;
-  --sidebar-ring: #14f195;
+  --sidebar-foreground: #e5e7eb;
+  --sidebar-primary: #14F195;
+  --sidebar-primary-foreground: #0a0a0f;
+  --sidebar-accent: #9945FF;
+  --sidebar-accent-foreground: #e5e7eb;
+  --sidebar-border: #27273a;
+  --sidebar-ring: #14F195;
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -221,7 +276,7 @@ html {
     @apply grid grid-cols-1 gap-3 sm:gap-4 lg:gap-6 @sm/main:grid-cols-1 @md/main:grid-cols-2 @2xl/main:grid-cols-3 @5xl/main:grid-cols-4;
   }
 
-  /* Ensure container queries work properly */
+  /* Container query support */
   .container-main {
     container-type: inline-size;
     container-name: main;
@@ -233,54 +288,88 @@ html {
   }
 }
 
-/* Solana theme specific styles */
-.solana input[data-slot="input"] {
-  background-color: #1a1a25;
-  border-color: #14f195;
-  border-width: 1.5px;
-  color: #f0f2f5;
-  box-shadow: inset 0 1px 4px 0 rgba(20, 241, 149, 0.1);
+/* Input styles for all themes */
+input[data-slot="input"] {
+  background-color: var(--input);
+  border: 1.5px solid var(--border);
+  color: var(--foreground);
+  transition: all 0.2s ease;
 }
 
-.solana input[data-slot="input"]::placeholder {
-  color: #9ca3af;
+input[data-slot="input"]::placeholder {
+  color: var(--muted-foreground);
 }
 
-.solana input[data-slot="input"]:focus {
-  box-shadow: 0 0 0 3px rgba(20, 241, 149, 0.1);
+input[data-slot="input"]:focus {
+  border-color: var(--ring);
+  box-shadow: 0 0 0 3px hsl(var(--ring) / 0.1);
+  outline: none;
 }
 
-.solana [data-slot="tabs-list"] {
-  background-color: #161620;
-  border: 1px solid #2a2a38;
-  color: #f0f2f5;
-  gap: 8px;
+/* Tab styles for all themes */
+[data-slot="tabs-list"] {
+  background-color: var(--muted);
+  border: 1px solid var(--border);
+  gap: 4px;
   padding: 4px;
+  border-radius: var(--radius-md);
 }
 
-.solana [data-slot="tabs-trigger"] {
+[data-slot="tabs-trigger"] {
   background-color: transparent;
-  color: #9ca3af;
+  color: var(--muted-foreground);
   border: 1px solid transparent;
   transition: all 0.2s ease;
   padding: 8px 16px;
-}
-
-.solana [data-slot="tabs-trigger"]:hover {
-  background-color: rgba(153, 69, 255, 0.15);
-  color: #f0f2f5;
-  border-color: rgba(153, 69, 255, 0.3);
-}
-
-.solana [data-slot="tabs-trigger"][data-state="active"] {
-  background: linear-gradient(135deg, #14f195 0%, #9945ff 100%);
-  color: #0d0d12;
-  border-color: transparent;
+  border-radius: var(--radius-sm);
   font-weight: 500;
 }
 
+[data-slot="tabs-trigger"]:hover {
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+}
+
+[data-slot="tabs-trigger"][data-state="active"] {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  border-color: transparent;
+  font-weight: 600;
+}
+
+/* Solana theme specific gradient button */
+.solana [data-slot="tabs-trigger"][data-state="active"] {
+  background: linear-gradient(135deg, #00d4aa 0%, #7d5dc8 100%);
+  color: #0a0a0f;
+}
+
 @layer components {
+
+  /* Subtle glow effect for charts */
   .chart-glow .recharts-area .recharts-curve {
-    filter: drop-shadow(0 0 6px rgba(20, 241, 149, 0.3));
+    filter: drop-shadow(0 0 4px hsl(var(--primary) / 0.2));
+  }
+
+  /* Button variants */
+  .btn-primary {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+    border: none;
+    transition: all 0.2s ease;
+  }
+
+  .btn-primary:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+
+  /* Card shadows */
+  .card-elevated {
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  }
+
+  .dark .card-elevated,
+  .solana .card-elevated {
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
   }
 }

@@ -2,6 +2,7 @@
 
 import AnimatedCounter from '@/components/AnimatedCounter';
 import { Button } from '@/components/ui/button';
+import { bricolageGrotesque } from '@/fonts';
 import { usePrivy } from '@privy-io/react-auth';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
@@ -27,7 +28,7 @@ export default function LandingPage() {
             transition={{ delay: 0.1 }}
             className="inline-block px-3 py-1 bg-card border border-border rounded-full mb-8 text-sm text-muted-foreground"
           >
-            x402 Payment Gateway
+            Powered by x402 Protocol
           </motion.div>
 
           <motion.h1
@@ -36,7 +37,9 @@ export default function LandingPage() {
             transition={{ delay: 0.2 }}
             className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 tracking-tight"
           >
-            One Line. Instant Revenue.
+            The Monetization Layer
+            <br />
+            <span className="text-muted-foreground">on Solana</span>
           </motion.h1>
 
           <motion.p
@@ -45,8 +48,7 @@ export default function LandingPage() {
             transition={{ delay: 0.3 }}
             className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto"
           >
-            Accept Solana payments instantly. No smart contracts, no complexity.
-            Just simple pay-per-request monetization.
+            Turn any API into a revenue stream in 60 seconds. One line of code to accept Solana payments. No smart contracts, no complexity.
           </motion.p>
 
           <motion.div
@@ -62,11 +64,10 @@ export default function LandingPage() {
                 disabled={!ready}
                 onClick={() => router.push('/dashboard')}
               >
-                Get Started
+                Start Earning
                 <ArrowRight className="w-4 h-4" />
               </Button>
             </motion.div>
-
             <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
               <Button
                 size="lg"
@@ -74,7 +75,7 @@ export default function LandingPage() {
                 className="font-medium"
                 onClick={() => window.open('https://x402.gitbook.io/x402', '_blank')}
               >
-                View Docs
+                Documentation
               </Button>
             </motion.div>
           </motion.div>
@@ -96,10 +97,15 @@ export default function LandingPage() {
               </div>
               <pre className="text-sm">
                 <code>
-                  <span className="text-muted-foreground"># Your original API</span>{'\n'}
-                  <span className="text-foreground">https://myapi.com/endpoint</span>{'\n\n'}
-                  <span className="text-muted-foreground"># Wrap it with PayGate</span>{'\n'}
-                  <span className="text-foreground">https://paygate.solixdb.xyz/endpoint</span>
+                  <span className="text-muted-foreground"># Your API</span>
+                  {'\n'}
+                  <span className="text-foreground">https://api.example.com/v1/data</span>
+                  {'\n\n'}
+                  <span className="text-muted-foreground"># Add Paygate prefix</span>
+                  {'\n'}
+                  <span className="text-foreground">https://paygate.solixdb.xyz/v1/data</span>
+                  {'\n\n'}
+                  <span className="text-green-500">✓ Now monetized</span>
                 </code>
               </pre>
             </div>
@@ -119,13 +125,13 @@ export default function LandingPage() {
             <div className="text-3xl font-bold mb-1">
               <AnimatedCounter end={1247} suffix="+" />
             </div>
-            <div className="text-sm text-muted-foreground">APIs</div>
+            <div className="text-sm text-muted-foreground">APIs Monetized</div>
           </div>
           <div>
             <div className="text-3xl font-bold mb-1">
               <AnimatedCounter end={523} suffix="K+" />
             </div>
-            <div className="text-sm text-muted-foreground">Transactions</div>
+            <div className="text-sm text-muted-foreground">Payments</div>
           </div>
           <div>
             <div className="text-3xl font-bold mb-1">
@@ -138,7 +144,7 @@ export default function LandingPage() {
               <span className="text-muted-foreground">&lt;</span>
               <AnimatedCounter end={100} suffix="ms" />
             </div>
-            <div className="text-sm text-muted-foreground">Response</div>
+            <div className="text-sm text-muted-foreground">Latency</div>
           </div>
         </div>
       </motion.section>
@@ -146,10 +152,11 @@ export default function LandingPage() {
       <footer className="border-t border-border py-12 px-4 sm:px-6 lg:px-8 mt-20">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-foreground" />
-              <span className="font-semibold text-lg">PayGate</span>
-            </div>
+            <Link href="/" className="flex items-center gap-2">
+              <span className={`text-xl ${bricolageGrotesque.className}`}>
+                Paygate
+              </span>
+            </Link>
 
             <div className="flex gap-8 text-sm text-muted-foreground">
               <Link
@@ -183,7 +190,7 @@ export default function LandingPage() {
           </div>
 
           <div className="mt-8 pt-8 border-t border-border text-center text-sm text-muted-foreground">
-            © 2025 PayGate. Powered by x402 Protocol.
+            © 2025 Paygate. The Monetization Layer on Solana.
           </div>
         </div>
       </footer>

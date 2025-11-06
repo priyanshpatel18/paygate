@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-
+    
     // Step 1: Upsert the user
     const user = await prisma.user.upsert({
       where: { privyId },

@@ -1,5 +1,6 @@
 "use client";
 
+import { Spinner } from "@/components/ui/8bit/spinner";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -388,7 +389,7 @@ export default function APIsListPage() {
       {/* Loading State */}
       {isLoading ? (
         <div className="flex flex-col items-center justify-center py-12 gap-4">
-          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          <Spinner className="size-20 text-primary" />
           <p className="text-sm text-muted-foreground">Loading your APIs...</p>
         </div>
       ) : (

@@ -197,7 +197,7 @@ export default function SettingsPage() {
               <div>
                 <div className="font-medium mb-1">Sign Out</div>
                 <div className="text-sm text-muted-foreground">
-                  Sign out of your PayGate account
+                  Sign out of your Paygate account
                 </div>
               </div>
               <Button

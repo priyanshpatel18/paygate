@@ -1,9 +1,9 @@
 import type { MetadataRoute } from "next";
 
 const { appName, description } = {
-  appName: "PayGate",
+  appName: "Paygate",
   description:
-    "PayGate is the x402 payment gateway for APIs. Monetize any API endpoint instantly with Solana micropayments. Add one line of code, start earning. No complex integrations, no minimum fees—just simple pay-per-request monetization for developers.",
+    "Paygate is the x402 payment gateway for APIs. Monetize any API endpoint instantly with Solana micropayments. Add one line of code, start earning. No complex integrations, no minimum fees—just simple pay-per-request monetization for developers.",
 };
 
 export default function manifest(): MetadataRoute.Manifest {

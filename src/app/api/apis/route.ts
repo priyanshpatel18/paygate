@@ -1,14 +1,14 @@
-import { PrismaClient } from "@/generated/prisma";
-import { NextRequest, NextResponse } from "next/server";
+import { PrismaClient, RequestType } from "@/generated/prisma";
+import { setRedisData } from "@/lib/cache-handler";
 import { nanoid } from "nanoid";
+import { NextRequest, NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
 // Helper to get user from Privy header
 async function getUserFromRequest(request: NextRequest) {
-  console.log(request.headers);
-  const privyId = request.headers.get("x-privy-id");
-  
+  const privyId = request.headers.get("privy-token");
+
   if (!privyId) {
     throw new Error("Not authenticated");
   }
@@ -48,7 +48,6 @@ export async function GET(request: NextRequest) {
       name: api.name,
       description: api.description,
       endpoint: api.endpoint,
-      originalUrl: api.originalUrl,
       wrappedUrl: api.wrappedUrl,
       pricePerRequest: api.pricePerRequest,
       status: api.status,
@@ -68,7 +67,7 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error("Error fetching APIs:", error);
-    
+
     if (error instanceof Error && error.message === "Not authenticated") {
       return NextResponse.json(
         { success: false, error: "Not authenticated" },
@@ -87,88 +86,56 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const user = await getUserFromRequest(request);
-    console.log(user);
-    
-    const body = await request.json();
 
-    const { name, originalUrl, endpoint, pricePerRequest, description } = body;
+    const form = await request.formData();
 
-    // Validation
-    if (!name || !originalUrl || !endpoint || !pricePerRequest) {
+
+    const title = form.get("title")?.toString() || "";
+    const description = form.get("description")?.toString() || "";
+    const endpoint = form.get("url")?.toString() || "";
+    const pricePerRequest = form.get("price")?.toString() || "";
+    const testMode = form.get("testMode")?.toString() || "";
+    const requestType = (form.get("requestType")?.toString() || "") as RequestType;
+
+    if (!endpoint || !pricePerRequest || !requestType) {
       return NextResponse.json(
         { success: false, error: "Missing required fields" },
         { status: 400 }
       );
     }
 
-    // Validate URL
-    try {
-      new URL(originalUrl);
-    } catch {
-      return NextResponse.json(
-        { success: false, error: "Invalid original URL" },
-        { status: 400 }
-      );
-    }
-
-    // Validate endpoint starts with /
-    if (!endpoint.startsWith("/")) {
-      return NextResponse.json(
-        { success: false, error: "Endpoint must start with /" },
-        { status: 400 }
-      );
-    }
-
-    // Validate price
     const price = parseFloat(pricePerRequest);
     if (isNaN(price) || price < 0.01 || price > 1000) {
       return NextResponse.json(
-        { success: false, error: "Price must be between $0.01 and $1000" },
+        { success: false, error: "Invalid price" },
         { status: 400 }
       );
     }
 
-    // Generate unique wrapped URL
     const uniqueId = nanoid(10);
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://paygate.solixdb.xyz";
-    const wrappedUrl = `${baseUrl}/${uniqueId}${endpoint}`;
+    const wrappedUrl = `${baseUrl}/api/paywall/${uniqueId}`;
 
-    // Create API
     const api = await prisma.api.create({
       data: {
-        name: name.trim(),
-        description: description?.trim() || null,
-        endpoint: endpoint.trim(),
-        originalUrl: originalUrl.trim(),
+        name: title,
+        description,
+        endpoint,
         wrappedUrl,
         pricePerRequest: price,
         userId: user.id,
+        testMode: testMode === "true",
+        requestType
       },
     });
 
-    return NextResponse.json({
-      success: true,
-      data: {
-        id: api.id,
-        name: api.name,
-        endpoint: api.endpoint,
-        wrappedUrl: api.wrappedUrl,
-        pricePerRequest: api.pricePerRequest,
-      },
-    });
+    await setRedisData(uniqueId, JSON.stringify({
+      endpoint
+    }));
+
+    return NextResponse.json({ success: true, data: api });
   } catch (error) {
     console.error("Error creating API:", error);
-
-    if (error instanceof Error && error.message === "Not authenticated") {
-      return NextResponse.json(
-        { success: false, error: "Not authenticated" },
-        { status: 401 }
-      );
-    }
-
-    return NextResponse.json(
-      { success: false, error: "Failed to create API" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: "Failed to create API" }, { status: 500 });
   }
 }
