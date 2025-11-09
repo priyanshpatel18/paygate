@@ -63,8 +63,9 @@ model Api {
   totalRequests   Int     @default(0)
   successRequests Int     @default(0)
   totalRevenue    Float   @default(0)
-  imageUrl        String? // NEW
+  imageUrl        String?
 
+  payTo       String
   testMode    Boolean
   requestType RequestType @default(GET)
 

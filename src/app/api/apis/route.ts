@@ -15,6 +15,7 @@ async function getUserFromRequest(request: NextRequest) {
 
   const user = await prisma.user.findUnique({
     where: { privyId },
+    include: { wallets: true }
   });
 
   if (!user) {
@@ -86,6 +87,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const user = await getUserFromRequest(request);
+    console.log(user);
 
     const form = await request.formData();
 
@@ -113,7 +115,7 @@ export async function POST(request: NextRequest) {
     }
 
     const uniqueId = nanoid(10);
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://paygate.solixdb.xyz";
+    const baseUrl = process.env.API_URL || "https://paygate.solixdb.xyz";
     const wrappedUrl = `${baseUrl}/api/paywall/${uniqueId}`;
 
     const api = await prisma.api.create({
@@ -123,6 +125,7 @@ export async function POST(request: NextRequest) {
         endpoint,
         wrappedUrl,
         pricePerRequest: price,
+        payTo: user.wallets[0].address,
         userId: user.id,
         testMode: testMode === "true",
         requestType
@@ -130,7 +133,8 @@ export async function POST(request: NextRequest) {
     });
 
     await setRedisData(uniqueId, JSON.stringify({
-      endpoint
+      endpoint,
+      id: api.id,
     }));
 
     return NextResponse.json({ success: true, data: api });

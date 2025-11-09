@@ -394,7 +394,6 @@ export default function APIsListPage() {
         </div>
       ) : (
         <>
-          {/* Stats Overview */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

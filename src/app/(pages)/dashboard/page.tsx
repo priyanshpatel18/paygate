@@ -81,7 +81,7 @@ export default function DashboardPage() {
           transition={{ delay: 0.2 }}
           className="relative"
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 rounded-2xl" />
+          <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-transparent to-secondary/5 rounded-2xl" />
           <div className="absolute inset-0 bg-card/50 backdrop-blur-3xl rounded-2xl border border-border" />
           
           <div className="relative z-10 p-6 space-y-5">
